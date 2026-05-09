@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="img-fluid rounded custom-shadow" alt="{{ product.name }}">
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h1 class="mb-3">{{ product.name }}</h1>
+            
+            <div class="h3 mb-4" style="color: #868e96; font-weight: 600;">
+                {{ product.price }} ₽
+            </div>
+
+            {% if product.description %}
+            <p class="mb-4">{{ product.description }}</p>
+            {% endif %}
+
+            {% if product.stock > 0 %}
+            <div class="alert alert-success mb-4">
+                ✅ {% trans "В наличии:" %} {{ product.stock }} {% trans "шт." %}
+            </div>
+
+            <form action="{% url 'carts:cart_add' product.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success btn-lg w-100">
+                    🛒 {% trans "Добавить в корзину" %}
+                </button>
+            </form>
+            {% else %}
+            <div class="alert alert-danger mb-4">
+                ❌ {% trans "Товар временно отсутствует" %}
+            </div>
+            {% endif %}
+
+            <hr>
+
+            {% if product.weight > 0 %}
+            <p><strong>{% trans "Вес:" %}</strong> {{ product.weight }} {% trans "гр" %}</p>
+            {% endif %}
+            <p><strong>{% trans "Категория:" %}</strong> {{ product.category }}</p>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <a href="{% url 'catalog' %}" class="btn btn-outline-secondary">
+            ← {% trans "Назад в каталог" %}
+        </a>
+    </div>
+</div>
+{% endblock %}

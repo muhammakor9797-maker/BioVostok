@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4 mb-4">{% trans "Добро пожаловать в магазин BioVostok" %}</h1>
+    <p class="lead mb-4">{% trans "Натуральные средства для здоровья и хорошего самочувствия." %}</p>
+    <p class="mb-4">{% trans "Только натуральные составы, без вредной химии, без лишних добавок." %}</p>
+    <p class="lead mb-5">{% trans "Мы собрали для вас проверенные товары, которые действительно работают. То чем пользуемся сами и рекомендуем близким." %}</p>
+    
+    <div class="mt-5">
+        <a href="{% url 'catalog' %}" class="btn btn-success btn-lg">
+            {% trans "Перейти в каталог товаров" %} →
+        </a>
+    </div>
+</div>
+{% endblock %}

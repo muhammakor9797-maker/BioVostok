@@ -1,0 +1,159 @@
+# English translation for BioVostok shop.
+# Copyright (C) 2026
+# This file is distributed under the same license as the Django project.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: BioVostok 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Магазин здоровья"
+msgstr "Health Store"
+
+msgid "Информация"
+msgstr "Information"
+
+msgid "Доставка и оплата"
+msgstr "Delivery and Payment"
+
+msgid "Контактная информация"
+msgstr "Contact Information"
+
+msgid "Про нас"
+msgstr "About Us"
+
+msgid "Язык"
+msgstr "Language"
+
+msgid "Каталог товаров"
+msgstr "Product Catalog"
+
+msgid "Все товары"
+msgstr "All Products"
+
+msgid "© 2026 Магазин - BioVostok здоровья и натуральных товаров"
+msgstr "© 2026 Store - BioVostok health and natural products"
+
+msgid "Добро пожаловать в магазин BioVostok"
+msgstr "Welcome to BioVostok store"
+
+msgid "Натуральные средства для здоровья и хорошего самочувствия."
+msgstr "Natural remedies for health and well-being."
+
+msgid "Только натуральные составы, без вредной химии, без лишних добавок."
+msgstr "Only natural ingredients, no harmful chemicals, no unnecessary additives."
+
+msgid "Мы собрали для вас проверенные товары, которые действительно работают. То чем пользуемся сами и рекомендуем близким."
+msgstr "We have gathered proven products that really work. The ones we use ourselves and recommend to our loved ones."
+
+msgid "Перейти в каталог товаров"
+msgstr "Go to catalog"
+
+msgid "Подробнее"
+msgstr "Details"
+
+msgid "В корзину"
+msgstr "Add to cart"
+
+msgid "Товары пока отсутствуют"
+msgstr "No products yet"
+
+msgid "В данной категории пока нет товаров"
+msgstr "There are no products in this category yet"
+
+msgid "В наличии:"
+msgstr "In stock:"
+
+msgid "шт."
+msgstr "pcs."
+
+msgid "Добавить в корзину"
+msgstr "Add to cart"
+
+msgid "Товар временно отсутствует"
+msgstr "Product is temporarily unavailable"
+
+msgid "Вес:"
+msgstr "Weight:"
+
+msgid "гр"
+msgstr "g"
+
+msgid "Категория:"
+msgstr "Category:"
+
+msgid "Назад в каталог"
+msgstr "Back to catalog"
+
+msgid "Ваша корзина"
+msgstr "Your cart"
+
+msgid "Товар"
+msgstr "Product"
+
+msgid "Цена"
+msgstr "Price"
+
+msgid "Сумма"
+msgstr "Total"
+
+msgid "Удалить"
+msgstr "Remove"
+
+msgid "Итого к оплате:"
+msgstr "Total:"
+
+msgid "Продолжить покупки"
+msgstr "Continue shopping"
+
+msgid "Оформить заказ"
+msgstr "Place order"
+
+msgid "Ваша корзина пуста"
+msgstr "Your cart is empty"
+
+msgid "Перейдите в каталог чтобы выбрать товары"
+msgstr "Go to the catalog to choose products"
+
+msgid "Перейти в каталог"
+msgstr "Go to catalog"
+
+msgid "Оформление заказа"
+msgstr "Checkout"
+
+msgid "Ваш заказ"
+msgstr "Your order"
+
+msgid "Количество:"
+msgstr "Quantity:"
+
+msgid "Итого:"
+msgstr "Total:"
+
+msgid "Заказ успешно оформлен!"
+msgstr "Order successfully placed!"
+
+msgid "Спасибо за ваш заказ!"
+msgstr "Thank you for your order!"
+
+msgid "Номер вашего заказа:"
+msgstr "Your order number:"
+
+msgid "Мы свяжемся с вами в ближайшее время для подтверждения заказа."
+msgstr "We will contact you shortly to confirm the order."
+
+msgid "На вашу почту"
+msgstr "An email has been sent to"
+
+msgid "отправлено письмо с информацией о заказе."
+msgstr "with information about your order."
+
+msgid "Вернуться на главную"
+msgstr "Back to home"

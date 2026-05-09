@@ -1,0 +1,159 @@
+# Arabic translation for BioVostok shop.
+# Copyright (C) 2026
+# This file is distributed under the same license as the Django project.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: BioVostok 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+msgid "Магазин здоровья"
+msgstr ""
+
+msgid "Информация"
+msgstr ""
+
+msgid "Доставка и оплата"
+msgstr ""
+
+msgid "Контактная информация"
+msgstr ""
+
+msgid "Про нас"
+msgstr ""
+
+msgid "Язык"
+msgstr ""
+
+msgid "Каталог товаров"
+msgstr ""
+
+msgid "Все товары"
+msgstr ""
+
+msgid "© 2026 Магазин - BioVostok здоровья и натуральных товаров"
+msgstr ""
+
+msgid "Добро пожаловать в магазин BioVostok"
+msgstr ""
+
+msgid "Натуральные средства для здоровья и хорошего самочувствия."
+msgstr ""
+
+msgid "Только натуральные составы, без вредной химии, без лишних добавок."
+msgstr ""
+
+msgid "Мы собрали для вас проверенные товары, которые действительно работают. То чем пользуемся сами и рекомендуем близким."
+msgstr ""
+
+msgid "Перейти в каталог товаров"
+msgstr ""
+
+msgid "Подробнее"
+msgstr ""
+
+msgid "В корзину"
+msgstr ""
+
+msgid "Товары пока отсутствуют"
+msgstr ""
+
+msgid "В данной категории пока нет товаров"
+msgstr ""
+
+msgid "В наличии:"
+msgstr ""
+
+msgid "шт."
+msgstr ""
+
+msgid "Добавить в корзину"
+msgstr ""
+
+msgid "Товар временно отсутствует"
+msgstr ""
+
+msgid "Вес:"
+msgstr ""
+
+msgid "гр"
+msgstr ""
+
+msgid "Категория:"
+msgstr ""
+
+msgid "Назад в каталог"
+msgstr ""
+
+msgid "Ваша корзина"
+msgstr ""
+
+msgid "Товар"
+msgstr ""
+
+msgid "Цена"
+msgstr ""
+
+msgid "Сумма"
+msgstr ""
+
+msgid "Удалить"
+msgstr ""
+
+msgid "Итого к оплате:"
+msgstr ""
+
+msgid "Продолжить покупки"
+msgstr ""
+
+msgid "Оформить заказ"
+msgstr ""
+
+msgid "Ваша корзина пуста"
+msgstr ""
+
+msgid "Перейдите в каталог чтобы выбрать товары"
+msgstr ""
+
+msgid "Перейти в каталог"
+msgstr ""
+
+msgid "Оформление заказа"
+msgstr ""
+
+msgid "Ваш заказ"
+msgstr ""
+
+msgid "Количество:"
+msgstr ""
+
+msgid "Итого:"
+msgstr ""
+
+msgid "Заказ успешно оформлен!"
+msgstr ""
+
+msgid "Спасибо за ваш заказ!"
+msgstr ""
+
+msgid "Номер вашего заказа:"
+msgstr ""
+
+msgid "Мы свяжемся с вами в ближайшее время для подтверждения заказа."
+msgstr ""
+
+msgid "На вашу почту"
+msgstr ""
+
+msgid "отправлено письмо с информацией о заказе."
+msgstr ""
+
+msgid "Вернуться на главную"
+msgstr ""

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>{% trans "Личный кабинет" %}</h1>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4>{% trans "Мои данные" %}</h4>
+            <p><strong>{% trans "Имя пользователя:" %}</strong> {{ request.user.username }}</p>
+            <p><strong>{% trans "Email:" %}</strong> {{ request.user.email }}</p>
+        </div>
+    </div>
+    
+    <h2>{% trans "Мои заказы" %}</h2>
+    
+    {% if orders %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>№</th>
+                    <th>{% trans "Дата" %}</th>
+                    <th>{% trans "Сумма" %}</th>
+                    <th>{% trans "Статус" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.created|date:"d.m.Y" }}</td>
+                    <td>{{ order.get_total_cost }} ₽</td>
+                    <td>
+                        {% if order.paid %}
+                            <span class="text-success">{% trans "Оплачено" %}</span>
+                        {% else %}
+                            <span class="text-warning">{% trans "Ожидает" %}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <p>{% trans "У вас пока нет заказов." %}</p>
+        <a href="{% url 'catalog' %}" class="btn btn-success">{% trans "Перейти в каталог" %}</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

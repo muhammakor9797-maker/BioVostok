@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /cart/
+Disallow: /orders/
+Disallow: /users/
+
+Sitemap: https://твой_домен.ru/sitemap.xml
