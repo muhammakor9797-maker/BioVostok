@@ -24,8 +24,8 @@ env/
 *.swo
 *~
 
-# Media
-media/
+# Media (временно убрано для деплоя)
+# media/
 
 # Static
 staticfiles/
