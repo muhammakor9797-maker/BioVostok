@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, Category
+from .forms import ReviewForm  # импорт формы
 
 
 def index(request):
@@ -12,6 +13,11 @@ def catalog(request):
     products = Product.objects.filter(available=True)
     categories = Category.objects.all()
 
+    category_slug = request.GET.get('category')
+    if category_slug:
+        products = products.filter(category__slug=category_slug)
+
+
     context = {
         'title': 'Каталог товаров',
         'products': products,
@@ -23,12 +29,33 @@ def catalog(request):
 def product_detail(request, product_slug):
     """Страница отдельного товара"""
     product = get_object_or_404(Product, slug=product_slug, available=True)
+    reviews = product.reviews.all()
+
+    # Проверяем, есть ли уже отзыв от текущего пользователя (ДО проверки POST)
+    user_has_review = False
+    if request.user.is_authenticated:
+        user_has_review = product.reviews.filter(author=request.user).exists()
+
+    # Форма для отзыва
+    form = ReviewForm()
+    if request.method == 'POST' and request.user.is_authenticated and not user_has_review:
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.product = product
+            review.author = request.user
+            review.save()
+            return redirect('product_detail', product_slug=product.slug)
 
     context = {
         'title': product.name,
         'product': product,
+        'reviews': reviews,
+        'form': form,
+        'user_has_review': user_has_review,
     }
     return render(request, 'goods/product.html', context)
+
 
 from django.http import HttpResponse
 from django.contrib.sitemaps import Sitemap

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,18 +21,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'REMOVED'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'REMOVED')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'biovostok.ru,www.biovostok.ru,biovostok.onrender.com').split(',')
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'modeltranslation', # ✅ ВСТАВЬ ЭТУ СТРОЧКУ САМОЙ ПЕРВОЙ!
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,8 +47,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -69,8 +69,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.i18n',
-                'goods.context_processors.languages',
                 'goods.context_processors.cart',
                 'goods.context_processors.categories',
             ],
@@ -137,46 +135,23 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-# --------------------------
-# МУЛЬТИЯЗЫЧНОСТЬ
-# --------------------------
-USE_I18N = True
-USE_L10N = True
-
-LANGUAGES = (
-    ('ru', 'Русский'),
-    ('en', 'English'),
-    #('ar', 'العربية'),
-)
-
-DEFAULT_LANGUAGE = 0
-MODELTRANSLATION_DEFAULT_LANGUAGE = 'ru'
-MODELTRANSLATION_LANGUAGES = ('ru', 'en', )  # 'ar' пока закомментирован
-MODELTRANSLATION_FALLBACK_LANGUAGES = ('ru', 'en', )  # 'ar' пока закомментирован
-
-LOCALE_PATHS = [
-    BASE_DIR / 'locale',
-]
 
 CART_SESSION_ID = 'cart'
 
 # Настройки почты
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # или smtp.mail.ru, smtp.yandex.ru
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'REMOVED'
 EMAIL_HOST_PASSWORD = 'REMOVED'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 ADMIN_EMAIL = 'REMOVED'
-
-# Автоматическая версия статических файлов чтобы сбросить кэш
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+ORDERS_EMAIL = 'REMOVED'
 
 LOGIN_REDIRECT_URL = 'users:profile'
 LOGIN_URL = 'users:login'
-

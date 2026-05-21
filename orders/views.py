@@ -43,7 +43,7 @@ def order_create(request):
                 Итоговая сумма: {order.get_total_cost()} ₽
                 ''',
                 from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[settings.ADMIN_EMAIL],
+                recipient_list=[settings.ADMIN_EMAIL, settings.ORDERS_EMAIL],
                 fail_silently=True,
             )
 

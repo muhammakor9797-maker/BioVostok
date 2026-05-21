@@ -1,12 +1,4 @@
 from .models import Category
-from django.conf import settings
-from django.utils.translation import get_language
-
-def languages(request):
-    return {
-        'LANGUAGES': settings.LANGUAGES,
-        'SELECTED_LANGUAGE': get_language(),
-    }
 
 
 def cart(request):

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import Category, Product
+from .models import Review
 
 
 @admin.register(Category)
@@ -18,10 +19,11 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = [
         'product_image', 'name', 'slug', 'price', 
-        'weight', 'stock', 'available', 'created'
+        'weight', #'stock',
+        'available', 'created'
     ]
     list_filter = ['available', 'created', 'updated', 'category']
-    list_editable = ['price', 'weight', 'stock', 'available']
+    list_editable = ['price', 'weight', 'available']
     prepopulated_fields = {'slug': ('name',)}
     search_fields = ['name', 'description']
     raw_id_fields = ['category']
@@ -47,3 +49,9 @@ class ProductAdmin(admin.ModelAdmin):
             return format_html('<img src="{}" width="50" height="50" style="object-fit: cover;" />', obj.image.url)
         return '-'
     product_image.short_description = 'Фото'
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('product', 'author', 'rating', 'created')
+    list_filter = ('rating', 'created')
+    search_fields = ('product__name', 'author__username')

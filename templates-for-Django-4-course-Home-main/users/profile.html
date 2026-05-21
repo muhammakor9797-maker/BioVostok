@@ -10,9 +10,30 @@
             <h4>{% trans "Мои данные" %}</h4>
             <p><strong>{% trans "Имя пользователя:" %}</strong> {{ request.user.username }}</p>
             <p><strong>{% trans "Email:" %}</strong> {{ request.user.email }}</p>
+            <p><strong>{% trans "На сайте с:" %}</strong> {{ request.user.date_joined|date:"d.m.Y" }}</p>
+            <a href="{% url 'users:password_change' %}" class="btn btn-outline-warning mt-2">{% trans "Сменить пароль" %}</a>
         </div>
     </div>
     
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-warning mb-0">{{ total_orders }}</h3>
+                    <p class="mb-0">{% trans "Всего заказов" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-warning mb-0">{{ total_spent }} ₽</h3>
+                    <p class="mb-0">{% trans "Потрачено всего" %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h2>{% trans "Мои заказы" %}</h2>
     
     {% if orders %}

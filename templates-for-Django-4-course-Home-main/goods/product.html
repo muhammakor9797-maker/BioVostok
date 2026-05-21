@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n static %}
 
 {% block content %}
 <div class="container mt-5">
@@ -12,7 +12,7 @@
         <div class="col-md-6">
             <h1 class="mb-3">{{ product.name }}</h1>
             
-            <div class="h3 mb-4" style="color: #868e96; font-weight: 600;">
+            <div class="h3 mb-4 product-price-detail">
                 {{ product.price }} ₽
             </div>
 
@@ -20,9 +20,9 @@
             <p class="mb-4">{{ product.description }}</p>
             {% endif %}
 
-            {% if product.stock > 0 %}
+            {% if product.available %}
             <div class="alert alert-success mb-4">
-                ✅ {% trans "В наличии:" %} {{ product.stock }} {% trans "шт." %}
+                ✅ {% trans "В наличии" %}
             </div>
 
             <form action="{% url 'carts:cart_add' product.id %}" method="post">
@@ -33,7 +33,7 @@
             </form>
             {% else %}
             <div class="alert alert-danger mb-4">
-                ❌ {% trans "Товар временно отсутствует" %}
+                ❌ {% trans "Нет в наличии" %}
             </div>
             {% endif %}
 
@@ -52,4 +52,79 @@
         </a>
     </div>
 </div>
+
+{% load i18n %}
+
+<!-- Блок отзывов -->
+<div class="mt-5">
+    <h3 class="text-white mb-4">{% trans "Отзывы" %} ({{ reviews|length }})</h3>
+
+    {% if reviews %}
+        {% for review in reviews %}
+        <div class="card mb-3" style="background: rgba(255,255,255,0.1); border: none;">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <strong class="text-white">{{ review.author.username }}</strong>
+                    <span class="text-warning">
+                        {% for i in "12345"|make_list %}
+                            {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <small class="text-white-50">{{ review.created|date:"d.m.Y" }}</small>
+                <p class="text-white mt-2 mb-0">{{ review.text }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-white-50">{% trans "Пока нет отзывов. Будьте первым!" %}</p>
+    {% endif %}
+
+    <!-- Форма добавления отзыва -->
+    {% if user.is_authenticated %}
+        {% if user_has_review %}
+            <p class="text-warning mt-3">{% trans "Вы уже оставили отзыв на этот товар." %}</p>
+        {% else %}
+            <h4 class="text-white mt-4">{% trans "Оставить отзыв" %}</h4>
+            <form method="post" class="mt-3">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="text-white mb-2">{% trans "Оценка" %}</label>
+                    <div class="star-rating">
+                        <span class="star" data-value="1">☆</span>
+                        <span class="star" data-value="2">☆</span>
+                        <span class="star" data-value="3">☆</span>
+                        <span class="star" data-value="4">☆</span>
+                        <span class="star" data-value="5">☆</span>
+                    </div>
+                    {{ form.rating }}
+                </div>
+                <div class="mb-3">
+                    <label class="text-white mb-2">{% trans "Ваш отзыв" %}</label>
+                    {{ form.text }}
+                </div>
+                <button type="submit" class="btn btn-success">{% trans "Отправить отзыв" %}</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <p class="text-white-50 mt-3">
+            <a href="{% url 'users:login' %}?next={{ request.path }}" class="text-success">{% trans "Войдите" %}</a> 
+            {% trans "чтобы оставить отзыв." %}
+        </p>
+    {% endif %}
+</div>
+
+
+<script>
+document.querySelectorAll('.star-rating .star').forEach(star => {
+    star.addEventListener('click', function() {
+        const value = this.dataset.value;
+        document.getElementById('rating-input').value = value;
+        document.querySelectorAll('.star-rating .star').forEach(s => {
+            s.textContent = s.dataset.value <= value ? '★' : '☆';
+            s.classList.toggle('active', s.dataset.value <= value);
+        });
+    });
+});
+</script>
 {% endblock %}

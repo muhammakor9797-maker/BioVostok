@@ -1,144 +1,259 @@
+/* ============================================ */
+/*              ОБЩИЕ СТИЛИ ТЕКСТА                */
+/* ============================================ */
+
+/* --- ОСНОВНОЙ ТЕКСТ СТРАНИЦЫ --- */
 body {
-  background-image: url("/static/deps/images/bg-image.jpg?v=3");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center center;
-  background-size: cover;
-  height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #e8e8e8e7;  /* Основной цвет текста — поменяй на свой */
 }
 
-.backdrop-blur {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+/* --- ЗАГОЛОВКИ --- */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: #e8e8e8;  /* Цвет заголовков (сейчас зелёный) */
 }
 
-.dropdown-menu {
-  background-color: rgba(33, 37, 41, 0.8) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+h1 {
+    font-size: 2.5rem;  /* Размер h1 */
 }
 
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.75rem;
+}
+
+/* --- ССЫЛКИ --- */
+a {
+    color: #157347;  /* Цвет ссылок */
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #0b5e3b;  /* Цвет ссылки при наведении */
+    text-decoration: underline;
+}
+
+/* --- АБЗАЦЫ --- */
+p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #e8e8e8;  /* Цвет абзацев */
+}
+
+/* --- ВАЖНЫЙ ТЕКСТ / ВЫДЕЛЕНИЕ --- */
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: #e8e8e8;
+}
+
+/* --- КНОПКИ С ТЕКСТОМ --- */
+.btn {
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* --- ТЕКСТ В НАВИГАЦИИ --- */
+.navbar .nav-link {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* --- СТИЛИ ДЛЯ ВСЕХ ПОЛЕЙ ФОРМ (тёмная тема) --- */
+.form-control {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 8px;
+    padding: 12px;
+    transition: border-color 0.2s;
+}
+.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border-color: #ffc107 !important;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.3) !important;
+    outline: none;
+}
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- ЗВЁЗДНЫЙ РЕЙТИНГ В ОТЗЫВАХ --- */
+.star-rating .star {
+    font-size: 2rem;
+    cursor: pointer;
+    color: #ffc107;
+    transition: color 0.2s;
+    user-select: none;
+}
+.star-rating .star:hover,
+.star-rating .star.active {
+    color: #ffc107;
+    text-shadow: 0 0 10px #ffc107;
+}
+
+/* --- ПОЛЕ ВВОДА ТЕКСТА ОТЗЫВА --- */
+#id_text {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 8px;
+    padding: 12px;
+    transition: border-color 0.2s;
+}
+#id_text:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border-color: #ffc107 !important;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.3) !important;
+    outline: none;
+}
+#id_text::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- УВЕДОМЛЕНИЯ НАЛИЧИЯ ТОВАРА --- */
+.alert-success {
+    background-color: rgba(25, 135, 84, 0.2) !important;
+    border-color: #198754 !important;
+    color: #ffffff !important;
+}
+.alert-danger {
+    background-color: rgba(220, 53, 69, 0.2) !important;
+    border-color: #dc3545 !important;
+    color: #ffffff !important;
+}
+
+/* --- ТЕКСТ В БОКОВОМ МЕНЮ КАТАЛОГА (десктоп) --- */
+.catalog-sidebar a {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #ffffff;  /* Белый текст в боковом меню */
+}
+
+/* --- ТЕКСТ В ФУТЕРЕ --- */
+footer p {
+    font-size: 0.9rem;
+    color: #ffffff;  /* Белый текст в подвале */
+}
+
+/* --- СЧЁТЧИК КОРЗИНЫ --- */
+.cart-counter {
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* --- КАРТОЧКИ ТОВАРОВ В КАТАЛОГЕ --- */
 .card {
-  background-color: rgba(255, 255, 255, 0.72) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
-  transition: all 0.3s ease;
+    background-color: #ffffff2d;  /* ← Цвет фона карточки (сейчас белый) */
+    border: 1px solid #e0e0e0b3;  /* ← Рамка */
+    border-radius: 10px;         /* ← Скругление углов */
+    transition: box-shadow 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px) scale(1.02);
-  background-color: rgba(255, 255, 255, 0.8) !important;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);  /* ← Тень при наведении */
 }
 
-.dropdown-toggle::after {
-  content: none;
+.card-body {
+    background-color: transparent;  /* ← Фон внутри карточки */
 }
 
-.custom-shadow {
-  box-shadow: 5px 5px 25px 19px #000000;
+.card-title {
+    color: #ffffff;  /* ← Цвет названия товара */
 }
 
-.product_id {
-  color: gray;
-  font-size: 15px;
+.text-success {
+    color: #b1de0c !important;
 }
 
-.badge.bg-warning.text-dark {
-  position: absolute;
-  top: 10px;
-  right: 5px;
-  z-index: 1;
-  padding: 5px 10px;
-  border-radius: 3px;
-  font-size: 1rem;
-  box-shadow: 2px 2px 15px 9px #000000;
+/* --- КАТЕГОРИЯ ТОВАРА В КАРТОЧКЕ --- */
+.text-muted {
+    color: #b1de0ce6 !important;  /* ← МЕНЯЙТЕ ЗНАЧЕНИЕ НА СВОЙ ЦВЕТ */
 }
 
-.badge-banner {
-  top: 80%;
-  border-radius: 15px;
-  font-size: 0.7rem;
+/* --- ЦЕНА НА СТРАНИЦЕ ТОВАРА --- */
+.product-price-detail {
+    color: #b1de0c;      /* ← МЕНЯЙТЕ ЦВЕТ ЗДЕСЬ */
+    font-weight: 600;
 }
 
-.col-lg-10 {
-  color: aliceblue;
+/* --- БЛОК "КОРЗИНА ПУСТА" --- */
+.alert-info {
+    background-color: #ffffff2d !important;  /* ← ФОН БЛОКА */
+    border-color: #404552 !important;      /* ← РАМКА */
+    color: #e8e8e8 !important;             /* ← ЦВЕТ ТЕКСТА */
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: #ffffff !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+/* --- КНОПКА "ПЕРЕЙТИ В КАТАЛОГ" В КОРЗИНЕ --- */
+.btn-primary {
+    background-color: #198754 !important;  /* ← ФОН КНОПКИ */
+    border-color: #198754 !important;      /* ← РАМКА КНОПКИ */
+    color: #ffffff !important;             /* ← ТЕКСТ КНОПКИ */
 }
 
-p, span, li, label {
-  color: #f1f3f5 !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+.btn-primary:hover {
+    background-color: #157347 !important;  /* ← ФОН ПРИ НАВЕДЕНИИ */
+    border-color: #157347 !important;
 }
 
-a:not(.btn):not(.nav-link):not(.dropdown-item) {
-  color: #ffffff !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-.card h1, .card h2, .card h3, .card h4, .card h5, .card h6,
-.card p, .card span, .card li, .card a,
-.table *, .form-control, .list-group-item * {
-  color: #212529 !important;
-  text-shadow: none !important;
-}
-
-.table, .form-control, .alert, .modal-content, .pagination {
-  background-color: rgba(255, 255, 255, 0.72) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-}
-
-.btn {
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-input, select, textarea {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
-}
-
+/* --- КНОПКА "ПОДРОБНЕЕ" В КАРТОЧКЕ ТОВАРА --- */
 .btn-outline-dark {
-  color: #ffffff !important;
-  background-color: rgba(255, 255, 255, 0.15) !important;
-  border-color: rgba(255, 255, 255, 0.4) !important;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+    color: #c7cdca;           /* Цвет текста */
+    border-color: #ffffff;    /* Цвет рамки (зелёный) */
+    background-color: transparent;
 }
 
 .btn-outline-dark:hover {
-  color: #212529 !important;
-  background-color: #ffffff !important;
-  border-color: #ffffff !important;
-  text-shadow: none !important;
+    color: #ffffff;           /* Цвет текста при наведении (белый) */
+    background-color: #ffffff2f; /* Фон при наведении (зелёный) */
+    border-color: #ffffff69;     /* Рамка при наведении */
 }
 
-.card .btn-outline-dark {
-  color: #212529 !important;
-  border-color: #212529 !important;
-  text-shadow: none !important;
-  box-shadow: none !important;
+/* --- КНОПКИ КАТЕГОРИЙ В КАТАЛОГЕ (кнопки-фильтры) --- */
+.btn-group .btn-outline-dark {
+    color: #c7cdca;           /* Цвет текста */
+    border-color: #198754;    /* Цвет рамки (зелёный) */
+    background-color: transparent;
 }
 
-.card .btn-outline-dark:hover {
-  color: #ffffff !important;
-  background-color: #212529 !important;
+.btn-group .btn-outline-dark:hover {
+    color: #ffffff;           /* Цвет текста при наведении (белый) */
+    background-color: #ffffff9c; /* Фон при наведении (зелёный) */
+    border-color: #198754;     /* Рамка при наведении */
 }
 
-.list-group-item {
-  background-color: rgba(255, 255, 255, 0.7) !important;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+/* --- КНОПКА "НАЗАД В КАТАЛОГ" --- */
+.btn-outline-secondary {
+    color: #c7cdca !important;        /* Жёлтый текст (под цвет звёзд) */
+    border-color: #ffffff !important;  /* Жёлтая рамка */
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 10px 25px;
+    transition: all 0.3s ease;
 }
+.btn-outline-secondary:hover {
+    color: #ffffff !important;            /* Чёрный текст при наведении */
+    background-color: #ffffff2f !important; /* Жёлтый фон */
+    border-color: #ffffff2f !important;
+    box-shadow: 0 0 15px rgba(58, 161, 104, 0.5);
+}
+
+
+/* ============================================ */
+/*         КАК МЕНЯТЬ ЦВЕТА                     */
+/* ============================================ */
+/* Чтобы поменять цвет заголовков — измени      */
+/* значение color: у h1-h6 (строка 18)          */
+/* Чтобы поменять цвет абзацев — измени         */
+/* значение color: у p (строка 46)              */
+/* Чтобы поменять цвет ссылок — измени          */
+/* значение color: у a (строка 31)              */
+/* ============================================ */

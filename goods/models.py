@@ -37,3 +37,27 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews', verbose_name='Товар')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Автор')
+    text = models.TextField(verbose_name='Текст отзыва')
+    rating = models.PositiveSmallIntegerField(
+        verbose_name='Оценка',
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+        ordering = ['-created']
+        # Один пользователь — один отзыв на товар
+        unique_together = ('product', 'author')
+
+    def __str__(self):
+        return f'{self.author} — {self.product.name} ({self.rating}★)'
+

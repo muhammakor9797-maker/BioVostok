@@ -26,6 +26,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        {% comment %}
                         <li class="nav-item dropdown ">
                             <a class="nav-link dropdown-toggle text-white" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -37,18 +38,32 @@
                                 <li><a class="dropdown-item  text-white" href="#">{% trans "Про нас" %}</a></li>
                             </ul>
                         </li>
+                        {% endcomment %}
+                        <!-- Пункт Каталог ТОЛЬКО на мобильных (d-lg-none) -->
+                        <li class="nav-item dropdown d-lg-none">
+                            <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                📦 {% trans "Каталог" %}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item text-white" href="{% url 'catalog' %}">{% trans "Все товары" %}</a></li>
+                                {% for category in categories %}
+                                <li><a class="dropdown-item text-white" href="{% url 'catalog' %}?category={{ category.slug }}">{{ category.icon }} {{ category.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
                     </ul>
 
                     <!-- Кнопки связи -->
                     <ul class="navbar-nav ms-3">
                         <li class="nav-item">
-                            <a href="https://wa.me/79991234567" target="_blank" class="nav-link text-success">
-                                <i class="fab fa-whatsapp"></i>
+                            <a href="https://wa.me/201012857643" target="_blank" class="nav-link text-success">
+                                <i class="fab fa-whatsapp"></i> Связаться с нами
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="https://t.me/yourusername" target="_blank" class="nav-link text-info">
-                                <i class="fab fa-telegram"></i>
+                            <a href="https://t.me/hairat78" target="_blank" class="nav-link text-info">
+                                <i class="fab fa-telegram"></i> Связаться с нами
                             </a>
                         </li>
                     </ul>
@@ -84,36 +99,15 @@
                         {% endif %}
                     </ul>
 
-                    <!-- Переключатель языков -->
-                    <ul class="navbar-nav ms-2">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
-                                🌐 {% trans "Язык" %}
-                            </a>
-                            <ul class="dropdown-menu bg-dark">
-                                {% for code, name in LANGUAGES %}
-                                <li>
-                                    <form action="{% url 'set_language' %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="next" value="{{ request.path }}">
-                                        <input type="hidden" name="language" value="{{ code }}">
-                                        <button type="submit" class="dropdown-item text-white {% if code == SELECTED_LANGUAGE %}active{% endif %}">
-                                            {{ name }}
-                                        </button>
-                                    </form>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </nav>
     </header>
 
     <section class="flex-grow-1">
-        <!-- Выдвижное меню каталога слева -->
+        <!-- Выдвижное меню каталога слева (ТОЛЬКО на десктопе) -->
         <style>
+            /* --- Десктопное выдвижное меню --- */
             .catalog-sidebar {
                 position: fixed;
                 top: 0;
@@ -128,7 +122,7 @@
             }
             .catalog-trigger {
                 position: fixed;
-                top: 120px;
+                top: 80px;
                 left: 0;
                 width: 50px;
                 height: 50px;
@@ -161,7 +155,7 @@
             .catalog-sidebar a:hover {
                 background: rgba(255,255,255,0.1);
             }
-            
+
             /* Корзина в правом нижнем углу */
             .cart-button {
                 position: fixed;
@@ -192,13 +186,20 @@
                 font-size: 12px;
                 font-weight: bold;
             }
+
+            /* На мобильных — скрываем выдвижное меню */
+            @media (max-width: 991.98px) {
+                .catalog-wrapper {
+                    display: none !important;
+                }
+            }
         </style>
 
-        <div class="catalog-wrapper">
+        <div class="catalog-wrapper d-none d-lg-block">
             <div class="catalog-trigger">📋</div>
             <div class="catalog-sidebar">
                 <h5 class="text-white mb-4 ms-2">📦 {% trans "Каталог товаров" %}</h5>
-                <a href="{% url 'catalog' %}">✅ {% trans "Все товары" %}</a>
+                <a href="{% url 'catalog' %}">{% trans "Все товары" %}</a>
                 {% for category in categories %}
                 <a href="{% url 'catalog' %}?category={{ category.slug }}">{{ category.icon }} {{ category.name }}</a>
                 {% endfor %}
@@ -221,7 +222,12 @@
 
     <footer class="py-4 bg-dark bg-opacity-50 backdrop-blur mt-5">
         <div class="container">
-            <p class="m-0 text-center text-white">{% trans "© 2026 Магазин - BioVostok здоровья и натуральных товаров" %}</p>
+            <p class="m-0 text-center text-white">© 2026 BioVostok. {% trans "Все права защищены." %}</p>
+            <p class="m-0 text-center mt-2">
+                <a href="https://yandex.ru/legal/confidential/ru/" target="_blank" class="text-white-50 text-decoration-none">
+                    {% trans "Политика конфиденциальности" %}
+                </a>
+            </p>
         </div>
     </footer>
 

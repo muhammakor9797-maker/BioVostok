@@ -25,4 +25,10 @@ def register_view(request):
 @login_required
 def profile_view(request):
     orders = Order.objects.filter(user=request.user).order_by('-created')
-    return render(request, 'users/profile.html', {'orders': orders})
+    total_orders = orders.count()
+    total_spent = sum(order.get_total_cost() for order in orders)
+    return render(request, 'users/profile.html', {
+        'orders': orders,
+        'total_orders': total_orders,
+        'total_spent': total_spent,
+    })
