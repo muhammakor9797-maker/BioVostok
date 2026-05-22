@@ -13,9 +13,9 @@ from goods.views import index, catalog, product_detail
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('i18n/', set_language, name='set_language'),
-    path('users/', include('users.urls', namespace='users')),
-    path('cart/', include('carts.urls', namespace='carts')),
-    path('orders/', include('orders.urls', namespace='orders')),
+    path('users/', include('users.urls')),
+    path('cart/', include('carts.urls')),
+    path('orders/', include('orders.urls')),
     path('sitemap.xml', sitemap_view, name='sitemap'),  # ✅ добавь эту строчку здесь
     path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
     

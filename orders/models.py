@@ -1,25 +1,5 @@
 from django.conf import settings
 from django.db import models
-
-class ShippingMethod(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Название доставки')
-    icon = models.CharField(max_length=50, verbose_name='Иконка', blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Стоимость')
-    min_days = models.PositiveIntegerField(verbose_name='Мин срок дней')
-    max_days = models.PositiveIntegerField(verbose_name='Макс срок дней')
-    available_worldwide = models.BooleanField(default=False, verbose_name='Доступно по всему миру')
-    active = models.BooleanField(default=True, verbose_name='Включено')
-
-    class Meta:
-        verbose_name = 'Способ доставки'
-        verbose_name_plural = 'Способы доставки'
-        ordering = ['price']
-
-    def __str__(self):
-        return self.name
-
-
-from django.db import models
 from goods.models import Product
 
 
