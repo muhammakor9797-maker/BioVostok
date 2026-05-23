@@ -23,31 +23,35 @@ def order_create(request):
             # Очищаем корзину
             cart.clear()
 
-            # Отправляем уведомление админу
-            send_mail(
-                subject=f'Новый заказ #{order.id} на сайте!',
-                message=f'''
-                Поступил новый заказ #{order.id}!
-                
-                Покупатель: {order.first_name} {order.last_name}
-                Телефон: {order.phone}
-                Email: {order.email}
-                
-                Адрес доставки:
-                Страна: {order.country}
-                Город: {order.city}
-                Адрес: {order.address}
-                Индекс: {order.postal_code}
-                
-                Способ доставки: {order.shipping_method}
-                Итоговая сумма: {order.get_total_cost()} ₽
-                ''',
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[settings.ADMIN_EMAIL, settings.ORDERS_EMAIL],
-                fail_silently=True,
-            )
+            # Отправляем уведомление админу (с таймаутом, чтобы не зависло)
+            try:
+                import socket
+                socket.setdefaulttimeout(10)
+                send_mail(
+                    subject=f'Новый заказ #{order.id} на сайте!',
+                    message=f'''
+                    Поступил новый заказ #{order.id}!
+                    
+                    Покупатель: {order.first_name} {order.last_name}
+                    Телефон: {order.phone}
+                    Email: {order.email}
+                    
+                    Адрес доставки:
+                    Страна: {order.country}
+                    Город: {order.city}
+                    Адрес: {order.address}
+                    Индекс: {order.postal_code}
+                    
+                    Способ доставки: {order.shipping_method}
+                    Итоговая сумма: {order.get_total_cost()} ₽
+                    ''',
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[settings.ADMIN_EMAIL, settings.ORDERS_EMAIL],
+                    fail_silently=True,
+                )
+            except Exception:
+                pass  # Если письмо не отправилось — не критично, заказ всё равно создан
 
-            
             # Сохраняем номер заказа в сессии для страницы успешного заказа
             request.session['order_id'] = order.id
             
