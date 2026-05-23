@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def send_telegram_notification(order):
-    """Отправляет уведомление о новом заказе в Telegram (через urllib - легче)"""
+    """Отправляет уведомление о новом заказе в Telegram (обычный текст, без HTML)"""
     bot_token = settings.TELEGRAM_BOT_TOKEN
     chat_id = settings.TELEGRAM_CHAT_ID
     
@@ -19,32 +19,32 @@ def send_telegram_notification(order):
         for item in order.items.all()
     ])
     
+    shipping = str(order.shipping_method) if order.shipping_method else "Не указан"
+    
     message = (
-        f"🆕 <b>Новый заказ #{order.id}!</b>\n\n"
-        f"👤 <b>Покупатель:</b>\n"
-        f"  {order.first_name} {order.last_name}\n"
-        f"  📞 {order.phone}\n"
-        f"  📧 {order.email}\n\n"
-        f"📍 <b>Адрес доставки:</b>\n"
+        f"\U0001F195 НОВЫЙ ЗАКАЗ #{order.id}!\n\n"
+        f"\U0001F464 Покупатель: {order.first_name} {order.last_name}\n"
+        f"\U0001F4DE Телефон: {order.phone}\n"
+        f"\U0001F4E7 Email: {order.email}\n\n"
+        f"\U0001F4CD Адрес доставки:\n"
         f"  {order.country}, {order.city}\n"
         f"  {order.address}\n"
-        f"  📮 {order.postal_code}\n\n"
-        f"🚚 <b>Способ доставки:</b> {order.shipping_method}\n\n"
-        f"📦 <b>Товары:</b>\n"
+        f"  Почтовый индекс: {order.postal_code}\n\n"
+        f"\U0001F69A Доставка: {shipping}\n\n"
+        f"\U0001F4E6 Товары:\n"
         f"{items_list}\n\n"
-        f"💰 <b>Итоговая сумма:</b> {order.get_total_cost()} ₽"
+        f"\U0001F4B0 Итого: {order.get_total_cost()} руб."
     )
     
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     data = json.dumps({
         "chat_id": chat_id,
         "text": message,
-        "parse_mode": "HTML",
     }).encode('utf-8')
     
     try:
         req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
-        with urllib.request.urlopen(req, timeout=5) as response:
+        with urllib.request.urlopen(req, timeout=10) as response:
             if response.status != 200:
                 logger.error(f"Telegram API error: {response.read().decode()}")
     except Exception:
