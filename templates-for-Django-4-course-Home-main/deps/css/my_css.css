@@ -19,7 +19,7 @@ body {
 }
 
 .card {
-  background-color: rgba(255, 255, 255, 0.72) !important;
+  background-color: rgba(255, 255, 255, 0.799) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.18) !important;
@@ -90,7 +90,7 @@ a:not(.btn):not(.nav-link):not(.dropdown-item) {
 }
 
 .table, .form-control, .alert, .modal-content, .pagination {
-  background-color: rgba(255, 255, 255, 0.72) !important;
+  background-color: rgba(255, 255, 255, 0.92) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.18) !important;
