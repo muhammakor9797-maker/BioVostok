@@ -1,8 +1,11 @@
+import logging
 from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from .forms import OrderCreateForm
 from carts.cart import Cart
+
+logger = logging.getLogger(__name__)
 
 
 def order_create(request):
@@ -23,10 +26,8 @@ def order_create(request):
             # Очищаем корзину
             cart.clear()
 
-            # Отправляем уведомление админу (с таймаутом, чтобы не зависло)
+            # Отправляем уведомление админу
             try:
-                import socket
-                socket.setdefaulttimeout(10)
                 send_mail(
                     subject=f'Новый заказ #{order.id} на сайте!',
                     message=f'''
@@ -47,10 +48,10 @@ def order_create(request):
                     ''',
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     recipient_list=[settings.ADMIN_EMAIL, settings.ORDERS_EMAIL],
-                    fail_silently=True,
+                    fail_silently=False,
                 )
-            except Exception:
-                pass  # Если письмо не отправилось — не критично, заказ всё равно создан
+            except Exception as e:
+                logger.error(f'Ошибка отправки email для заказа #{order.id}: {e}')
 
             # Сохраняем номер заказа в сессии для страницы успешного заказа
             request.session['order_id'] = order.id
