@@ -82,7 +82,7 @@
     {% block breadcrumb_schema %}{% endblock %}
 </head>
 
-<body style="background: url('{% static 'bg-image.jpeg' %}') center center / cover no-repeat fixed; min-height: 100vh; display: flex; flex-direction: column;">
+<body class="bg-site" style="min-height: 100vh; display: flex; flex-direction: column;">
 
     <header>
         <nav class="navbar navbar-expand-lg bg-dark bg-opacity-75 backdrop-blur" data-bs-theme="dark">
@@ -162,6 +162,27 @@
     <section class="flex-grow-1">
         <!-- Выдвижное меню каталога (десктоп) -->
         <style>
+            /* Затемнение фона сайта */
+            body.bg-site {
+                position: relative;
+                background: url('{% static 'bg-image.jpeg' %}') center center / cover no-repeat fixed;
+            }
+            body.bg-site::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.55);
+                z-index: 0;
+                pointer-events: none;
+            }
+            body.bg-site > * {
+                position: relative;
+                z-index: 1;
+            }
+
             .catalog-sidebar {
                 position: fixed;
                 top: 0;
