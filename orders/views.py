@@ -1,7 +1,7 @@
+import json
 import logging
-import requests
+import urllib.request
 from django.conf import settings
-from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from .forms import OrderCreateForm
 from carts.cart import Cart
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def send_telegram_notification(order):
-    """Отправляет уведомление о новом заказе в Telegram"""
+    """Отправляет уведомление о новом заказе в Telegram (через urllib - легче)"""
     bot_token = settings.TELEGRAM_BOT_TOKEN
     chat_id = settings.TELEGRAM_CHAT_ID
     
@@ -19,38 +19,34 @@ def send_telegram_notification(order):
         for item in order.items.all()
     ])
     
-    message = f"""
-🆕 <b>Новый заказ #{order.id}!</b>
-
-👤 <b>Покупатель:</b>
-  {order.first_name} {order.last_name}
-  📞 {order.phone}
-  📧 {order.email}
-
-📍 <b>Адрес доставки:</b>
-  {order.country}, {order.city}
-  {order.address}
-  📮 {order.postal_code}
-
-🚚 <b>Способ доставки:</b> {order.shipping_method}
-
-📦 <b>Товары:</b>
-{items_list}
-
-💰 <b>Итоговая сумма:</b> {order.get_total_cost()} ₽
-"""
+    message = (
+        f"🆕 <b>Новый заказ #{order.id}!</b>\n\n"
+        f"👤 <b>Покупатель:</b>\n"
+        f"  {order.first_name} {order.last_name}\n"
+        f"  📞 {order.phone}\n"
+        f"  📧 {order.email}\n\n"
+        f"📍 <b>Адрес доставки:</b>\n"
+        f"  {order.country}, {order.city}\n"
+        f"  {order.address}\n"
+        f"  📮 {order.postal_code}\n\n"
+        f"🚚 <b>Способ доставки:</b> {order.shipping_method}\n\n"
+        f"📦 <b>Товары:</b>\n"
+        f"{items_list}\n\n"
+        f"💰 <b>Итоговая сумма:</b> {order.get_total_cost()} ₽"
+    )
     
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-    data = {
+    data = json.dumps({
         "chat_id": chat_id,
         "text": message,
         "parse_mode": "HTML",
-    }
+    }).encode('utf-8')
     
     try:
-        response = requests.post(url, data=data, timeout=5)
-        if not response.ok:
-            logger.error(f"Telegram API error: {response.text}")
+        req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
+        with urllib.request.urlopen(req, timeout=5) as response:
+            if response.status != 200:
+                logger.error(f"Telegram API error: {response.read().decode()}")
     except Exception:
         logger.exception("Ошибка отправки уведомления в Telegram")
 
@@ -73,26 +69,8 @@ def order_create(request):
             # Очищаем корзину
             cart.clear()
 
-            # Отправляем в Telegram
+            # Отправляем уведомление в Telegram
             send_telegram_notification(order)
-            
-            # Отправляем email (если получится - хорошо, если нет - не критично)
-            try:
-                send_mail(
-                    subject=f'Новый заказ #{order.id} на сайте!',
-                    message=f'''
-                    Поступил новый заказ #{order.id}!                    
-                    Покупатель: {order.first_name} {order.last_name}
-                    Телефон: {order.phone}
-                    Email: {order.email}
-                    Итоговая сумма: {order.get_total_cost()} ₽
-                    ''',
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[settings.ADMIN_EMAIL, settings.ORDERS_EMAIL],
-                    fail_silently=True,
-                )
-            except Exception:
-                pass  # Email не обязателен, Telegram важнее
 
             # Сохраняем номер заказа в сессии для страницы успешного заказа
             request.session['order_id'] = order.id
