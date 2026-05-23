@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /cart/
+Disallow: /users/
+Disallow: /password-reset/
+Disallow: */add/
+Disallow: */remove/
+
+Sitemap: https://biovostok.onrender.com/sitemap.xml

@@ -1,37 +1,92 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n static %}
+
+{% block meta_description %}BioVostok — интернет-магазин натуральных товаров для здоровья. Бады, травы, витамины из лучших традиций Востока. Доставка по всему миру.{% endblock %}
+{% block meta_keywords %}биовосток, biovostok, натуральные товары, здоровье, бады, травы, витамины, интернет-магазин{% endblock %}
+{% block title %}BioVostok — 🌿 Магазин натуральных товаров для здоровья{% endblock %}
+{% block og_title %}BioVostok — Магазин натуральных товаров для здоровья{% endblock %}
+
+{% block breadcrumb_schema %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Главная",
+        "item": "https://biovostok.onrender.com"
+    }]
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="text-center py-5">
-    <h1 class="display-4 mb-4">Добро пожаловать в BioVostok 🌿</h1>
+    <h1 class="display-4 mb-4 fw-bold text-white">Добро пожаловать в BioVostok 🌿</h1>
     
-    <p class="lead mb-4" style="font-size: 1.3rem;">
-        Мы верим, что забота о здоровье должна быть натуральной, безопасной и действительно эффективной. 
-        Именно поэтому в нашем магазине собраны только проверенные средства с натуральными составами — 
-        без агрессивной химии, лишних добавок и пустых обещаний.
-    </p>
-    
-    <p class="mb-4" style="font-size: 1.15rem;">
-        Каждый товар мы подбираем особенно внимательно: изучаем составы, качество и пользу, 
-        потому что рекомендуем только то, чем пользуемся сами и доверяем своим близким. 
-        Наша цель — помочь вам поддерживать здоровье, энергию и хорошее самочувствие каждый день 
-        естественным способом.
-    </p>
-    
-    <p class="mb-4" style="font-size: 1.15rem;">
-        В BioVostok вы найдёте продукты для укрепления организма, поддержки иммунитета и заботы 
-        о себе и своей семье. Мы делаем ставку на качество, натуральность и результат, который 
-        можно почувствовать.
-    </p>
-    
-    <p class="lead mb-5" style="font-size: 1.3rem;">
-        ✨ Выбирайте натуральную заботу о здоровье вместе с BioVostok.
-    </p>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <p class="lead mb-4 text-white" style="font-size: 1.3rem;">
+                Мы верим, что забота о здоровье должна быть <strong>натуральной, безопасной и действительно эффективной</strong>. 
+                Именно поэтому в нашем магазине собраны только проверенные средства с натуральными составами — 
+                без агрессивной химии, лишних добавок и пустых обещаний.
+            </p>
+            
+            <p class="mb-4 text-white-50" style="font-size: 1.15rem;">
+                Каждый товар мы подбираем особенно внимательно: изучаем составы, качество и пользу, 
+                потому что рекомендуем только то, чем пользуемся сами и доверяем своим близким. 
+                Наша цель — помочь вам поддерживать здоровье, энергию и хорошее самочувствие каждый день 
+                естественным способом.
+            </p>
+            
+            <p class="mb-4 text-white-50" style="font-size: 1.15rem;">
+                В BioVostok вы найдёте продукты для укрепления организма, поддержки иммунитета и заботы 
+                о себе и своей семье. Мы делаем ставку на качество, натуральность и результат, который 
+                можно почувствовать.
+            </p>
+            
+            <p class="lead mb-5 text-white" style="font-size: 1.3rem;">
+                ✨ Выбирайте натуральную заботу о здоровье вместе с BioVostok.
+            </p>
+        </div>
+    </div>
 
     <div class="mt-5">
-        <a href="{% url 'catalog' %}" class="btn btn-success btn-lg">
+        <a href="{% url 'catalog' %}" class="btn btn-success btn-lg px-5 py-3 fw-bold shadow">
             {% trans "Перейти в каталог товаров" %} →
         </a>
+    </div>
+
+    <!-- Преимущества -->
+    <div class="row mt-5 pt-5 g-4 justify-content-center">
+        <div class="col-md-4 col-sm-6">
+            <div class="card bg-dark bg-opacity-50 border-0 h-100">
+                <div class="card-body text-center p-4">
+                    <div class="display-5 mb-3">🌱</div>
+                    <h5 class="text-white fw-bold">{% trans "Натуральные составы" %}</h5>
+                    <p class="text-white-50 small mb-0">{% trans "Только проверенные ингредиенты без химии" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="card bg-dark bg-opacity-50 border-0 h-100">
+                <div class="card-body text-center p-4">
+                    <div class="display-5 mb-3">🚚</div>
+                    <h5 class="text-white fw-bold">{% trans "Доставка по всему миру" %}</h5>
+                    <p class="text-white-50 small mb-0">{% trans "Отправляем в любую точку мира" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="card bg-dark bg-opacity-50 border-0 h-100">
+                <div class="card-body text-center p-4">
+                    <div class="display-5 mb-3">💚</div>
+                    <h5 class="text-white fw-bold">{% trans "Забота о вас" %}</h5>
+                    <p class="text-white-50 small mb-0">{% trans "Индивидуальный подход к каждому клиенту" %}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

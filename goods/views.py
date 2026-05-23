@@ -11,17 +11,19 @@ def index(request):
 def catalog(request):
     """Список всех товаров каталоге"""
     products = Product.objects.filter(available=True)
-    categories = Category.objects.all()
+    categories = Category.objects.filter(active=True)
 
     category_slug = request.GET.get('category')
+    selected_category = None
     if category_slug:
         products = products.filter(category__slug=category_slug)
-
+        selected_category = Category.objects.filter(slug=category_slug).first()
 
     context = {
-        'title': 'Каталог товаров',
+        'title': f'Каталог: {selected_category.name}' if selected_category else 'Каталог товаров',
         'products': products,
         'categories': categories,
+        'selected_category': selected_category,
     }
     return render(request, 'goods/catalog.html', context)
 
