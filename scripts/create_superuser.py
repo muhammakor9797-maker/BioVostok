@@ -18,7 +18,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-# Данные суперпользователя
+# Данные суперпользователя 1
 ADMIN_USERNAME = 'admin'
 ADMIN_EMAIL = 'admin@admin.com'
 ADMIN_PASSWORD = 'REMOVED'
@@ -40,6 +40,26 @@ else:
         password=ADMIN_PASSWORD
     )
     print(f'SUCCESS: Суперпользователь "{ADMIN_USERNAME}" создан')
+
+# Данные второго суперпользователя
+ADMIN2_USERNAME = 'ayratSupUz'
+ADMIN2_EMAIL = 'REMOVED'
+ADMIN2_PASSWORD = 'REMOVED'
+
+if User.objects.filter(username=ADMIN2_USERNAME).exists():
+    user2 = User.objects.get(username=ADMIN2_USERNAME)
+    user2.set_password(ADMIN2_PASSWORD)
+    user2.is_superuser = True
+    user2.is_staff = True
+    user2.save()
+    print(f'SUCCESS: Пользователь "{ADMIN2_USERNAME}" обновлён')
+else:
+    User.objects.create_superuser(
+        username=ADMIN2_USERNAME,
+        email=ADMIN2_EMAIL,
+        password=ADMIN2_PASSWORD
+    )
+    print(f'SUCCESS: Суперпользователь "{ADMIN2_USERNAME}" создан')
 
 print(f'Логин: {ADMIN_USERNAME}')
 print(f'Пароль: {ADMIN_PASSWORD}')
