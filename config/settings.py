@@ -95,22 +95,13 @@ if DATABASE_URL:
         'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
     }
 else:
-    # На Render используем Neon PostgreSQL
-    import platform
-    if 'RENDER' in os.environ or 'NEON' in os.environ:
-        DATABASES = {
-            'default': dj_database_url.parse(
-                'postgresql://neondb_owner:npg_7pQOsCP6tJRF@ep-divine-credit-a2nu0643-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require',
-                conn_max_age=600
-            )
+    # Локально используем SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
-    else:
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
+    }
 
 
 # Password validation
