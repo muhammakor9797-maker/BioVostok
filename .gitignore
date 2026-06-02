@@ -36,10 +36,7 @@ Thumbs.db
 *.log
 
 # Temp & generated files
-*.pyc
-__pycache__/
 api.env
 check_result.txt
 cloudinary_upload_log.txt
 data.json
-" " 

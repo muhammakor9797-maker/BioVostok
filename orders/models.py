@@ -46,7 +46,9 @@ class Order(models.Model):
         return f'Заказ №{self.id}'
 
     def get_total_cost(self):
-        return sum(item.get_cost() for item in self.items.all()) + self.shipping_method.price
+        items_cost = sum(item.get_cost() for item in self.items.all())
+        shipping_price = self.shipping_method.price if self.shipping_method else 0
+        return items_cost + shipping_price
 
 
 class OrderItem(models.Model):
