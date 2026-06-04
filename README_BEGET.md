@@ -8,11 +8,11 @@
 4. Зарегистрируйтесь и оплатите
 5. После оплаты вам выдадут **домен 3-го уровня** (например `ваш-логин.beget.tech`)
 
-## 2. Создать базу данных PostgreSQL
+## 2. Создать базу данных MySQL
 
 В панели управления Beget:
 1. **Базы данных** → **Создать базу**
-2. Тип: **PostgreSQL**
+2. Тип: **MySQL**
 3. Название: `furniture_shop`
 4. Пользователь: `django_user`
 5. Пароль: придумайте сами (например `MyPassword123!`)
@@ -50,7 +50,7 @@
 SECRET_KEY=django-insecure-сюда_любой_сложный_ключ
 DEBUG=False
 ALLOWED_HOSTS=ваш-логин.beget.tech,www.ваш-логин.beget.tech
-DATABASE_URL=postgres://django_user:MyPassword123!@localhost:5432/furniture_shop
+DATABASE_URL=mysql://django_user:MyPassword123!@localhost:3306/furniture_shop?charset=utf8
 CLOUDINARY_CLOUD_NAME=ваш_cloud_name
 CLOUDINARY_API_KEY=ваш_api_key
 CLOUDINARY_API_SECRET=ваш_api_secret
