@@ -2,12 +2,13 @@
 """
 Кастомное хранилище для Cloudinary.
 Используется вместо django-cloudinary-storage для совместимости с Django 6.0.
+Если Cloudinary не настроен — автоматически переключается на FileSystemStorage.
 """
 import os
 from urllib.parse import urljoin
 
 from django.conf import settings
-from django.core.files.storage import Storage
+from django.core.files.storage import Storage, FileSystemStorage
 from django.core.files.base import File
 from django.utils.deconstruct import deconstructible
 
@@ -16,15 +17,40 @@ import cloudinary.uploader
 import cloudinary.api
 
 
+def _is_cloudinary_configured():
+    """Проверяет, настроен ли Cloudinary."""
+    return all([
+        settings.CLOUDINARY_CLOUD_NAME,
+        settings.CLOUDINARY_API_KEY,
+        settings.CLOUDINARY_API_SECRET,
+    ])
+
+
 @deconstructible
 class CloudinaryStorage(Storage):
     """
     Django storage backend for Cloudinary.
     Загружает файлы в Cloudinary и возвращает URL для доступа к ним.
+    Если Cloudinary не настроен — использует FileSystemStorage как fallback.
     """
     
     def __init__(self, folder=None):
         self.folder = folder or ''
+        self._fallback = None
+        if not _is_cloudinary_configured():
+            self._fallback = FileSystemStorage(
+                location=settings.MEDIA_ROOT,
+                base_url=settings.MEDIA_URL,
+            )
+
+    def _get_fallback(self):
+        if self._fallback is None:
+            if not _is_cloudinary_configured():
+                self._fallback = FileSystemStorage(
+                    location=settings.MEDIA_ROOT,
+                    base_url=settings.MEDIA_URL,
+                )
+        return self._fallback
 
     def _get_public_id(self, name):
         """Преобразует путь файла в public_id для Cloudinary."""
@@ -35,7 +61,11 @@ class CloudinaryStorage(Storage):
         return name_without_ext
 
     def _save(self, name, content):
-        """Сохраняет файл в Cloudinary."""
+        """Сохраняет файл в Cloudinary или локально."""
+        fallback = self._get_fallback()
+        if fallback:
+            return fallback._save(name, content)
+        
         public_id = self._get_public_id(name)
         
         # Определяем тип ресурса по расширению
@@ -57,9 +87,13 @@ class CloudinaryStorage(Storage):
         return result.get('public_id', name)
 
     def url(self, name):
-        """Возвращает URL файла в Cloudinary."""
+        """Возвращает URL файла в Cloudinary или локально."""
         if not name:
             return ''
+        
+        fallback = self._get_fallback()
+        if fallback:
+            return fallback.url(name)
         
         # Если имя начинается с http - это уже полный URL
         if name.startswith('http://') or name.startswith('https://'):
@@ -83,7 +117,10 @@ class CloudinaryStorage(Storage):
         return name
 
     def exists(self, name):
-        """Проверяет, существует ли файл в Cloudinary."""
+        """Проверяет, существует ли файл."""
+        fallback = self._get_fallback()
+        if fallback:
+            return fallback.exists(name)
         try:
             public_id = self._get_public_id(name)
             cloudinary.api.resource(public_id)
@@ -92,7 +129,10 @@ class CloudinaryStorage(Storage):
             return False
 
     def delete(self, name):
-        """Удаляет файл из Cloudinary."""
+        """Удаляет файл."""
+        fallback = self._get_fallback()
+        if fallback:
+            return fallback.delete(name)
         try:
             public_id = self._get_public_id(name)
             cloudinary.uploader.destroy(public_id)
@@ -100,24 +140,39 @@ class CloudinaryStorage(Storage):
             pass
 
     def listdir(self, path):
-        """Список файлов в папке (не реализовано)."""
+        """Список файлов в папке."""
+        fallback = self._get_fallback()
+        if fallback:
+            return fallback.listdir(path)
         return [], []
 
     def size(self, name):
-        """Размер файла (не реализовано)."""
+        """Размер файла."""
+        fallback = self._get_fallback()
+        if fallback:
+            return fallback.size(name)
         return 0
 
     def get_accessed_time(self, name):
-        """Время последнего доступа (не реализовано)."""
+        """Время последнего доступа."""
+        fallback = self._get_fallback()
+        if fallback:
+            return fallback.get_accessed_time(name)
         import datetime
         return datetime.datetime.now()
 
     def get_created_time(self, name):
-        """Время создания (не реализовано)."""
+        """Время создания."""
+        fallback = self._get_fallback()
+        if fallback:
+            return fallback.get_created_time(name)
         import datetime
         return datetime.datetime.now()
 
     def get_modified_time(self, name):
-        """Время изменения (не реализовано)."""
+        """Время изменения."""
+        fallback = self._get_fallback()
+        if fallback:
+            return fallback.get_modified_time(name)
         import datetime
         return datetime.datetime.now()
