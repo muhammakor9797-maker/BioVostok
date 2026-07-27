@@ -1,5 +1,5 @@
-# Совместимая версия Django (LTS) для modeltranslation
-Django==4.2.19
+# Совместимая версия Django
+Django==6.0.4
 django-modeltranslation==0.19.12
 pillow==11.1.0
 requests==2.32.3
