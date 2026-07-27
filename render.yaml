@@ -3,7 +3,7 @@ services:
     name: biovostok
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python manage.py migrate --noinput && python manage.py collectstatic --noinput --no-post-process && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+    startCommand: python manage.py migrate --noinput && python manage.py collectstatic --noinput --no-post-process && python scripts/create_superuser.py && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
       - key: SECRET_KEY
         sync: false
@@ -12,7 +12,7 @@ services:
           name: biovostok-db
           property: connectionString
       - key: DEBUG
-        value: "False"
+        value: "True"
       - key: ALLOWED_HOSTS
         value: "biovostok.onrender.com,localhost,127.0.0.1"
       - key: CLOUDINARY_CLOUD_NAME
