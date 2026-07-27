@@ -62,7 +62,14 @@
 ![Главная страница](screenshots/main.png)
 ![Страница товара](screenshots/product.png)
 ![Корзина](screenshots/cart.png)
--->
+--><img width="1919" height="878" alt="cart" src="https://github.com/user-attachments/assets/64a172af-9ca1-46d9-a90c-1ef7b81ca22c" />
+<img width="1919" height="877" alt="cart (2)" src="https://github.com/user-attachments/assets/4aa9f4be-034a-4146-a907-1d986281bfbf" />
+<img width="1919" height="875" alt="admin-panel" src="https://github.com/user-attachments/assets/f22c55a0-fe8a-4671-b27a-20ca88acc4d9" />
+<img width="1919" height="879" alt="product-page2" src="https://github.com/user-attachments/assets/5c8d5d27-83a8-4b78-b855-2561ea3be5ab" />
+<img width="1919" height="873" alt="product-page" src="https://github.com/user-attachments/assets/a156a445-df9a-4c2c-8321-21eb4594ebf4" />
+<img width="1919" height="880" alt="main-page2" src="https://github.com/user-attachments/assets/4249bf02-258a-437e-b852-22928dfc4389" />
+<img width="1919" height="882" alt="main-page" src="https://github.com/user-attachments/assets/1568d6ae-a019-4026-9e7a-41e1ff611cfc" />
+
 
 ---
 
