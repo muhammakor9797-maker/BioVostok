@@ -1,92 +1,125 @@
-# Деплой furniture-shop на Beget
+# Деплой BioVostok на Beget
+
+Проект: Django + MySQL, точка входа — `passenger_wsgi.py`.
 
 ## 1. Купить хостинг
 
 1. Зайдите на **beget.com**
-2. Нажмите **"Заказать хостинг"**
-3. Выберите тариф **"Ника"** (99 ₽/мес) — для Django хватит
-4. Зарегистрируйтесь и оплатите
-5. После оплаты вам выдадут **домен 3-го уровня** (например `ваш-логин.beget.tech`)
+2. Нажмите **"Заказать хостинг"** и выберите тариф с поддержкой Python и MySQL
+3. Зарегистрируйтесь и оплатите (российские карты, СБП, ЮMoney)
+4. После оплаты получите **домен 3-го уровня** (например `ваш-логин.beget.tech`) — свой домен можно подключить отдельно
 
 ## 2. Создать базу данных MySQL
 
-В панели управления Beget:
-1. **Базы данных** → **Создать базу**
-2. Тип: **MySQL**
-3. Название: `furniture_shop`
-4. Пользователь: `django_user`
-5. Пароль: придумайте сами (например `MyPassword123!`)
-6. Запомните **пароль**, он понадобится
-
-## 3. Загрузить проект
-
-### Способ A — через Git (проще)
-
-1. В панели Beget → **Сайты** → напротив вашего домена нажмите **"Управление"**
-2. Включите **"Доступ по SSH"** (если ещё не включён)
-3. Подключитесь по SSH (данные в панели):
-   ```
-   ssh ваш_логин@ваш_логин.beget.tech
-   ```
-4. Выполните:
-   ```bash
-   cd ~/ваш_домен/public_html
-   git clone https://github.com/Korneyyy/furniture-shop.git .
-   ```
-
-### Способ B — через FTP (если SSH сложно)
-
-1. В панели Beget → **FTP** → создайте FTP-аккаунт
-2. Скачайте **FileZilla** (бесплатно)
-3. Подключитесь по FTP (логин/пароль из панели)
-4. Перейдите в папку `public_html`
-5. Скопируйте туда все файлы вашего проекта (кроме папки `venv`)
-
-## 4. Настроить окружение
-
-Через SSH или FTP создайте файл `.env` в корне проекта (`public_html/.env`):
+1. Панель управления → **Базы данных** → **Создать базу**
+2. Тип: **MySQL**; придумайте имя БД и пользователя, задайте пароль
+3. Строка подключения будет вида:
 
 ```
-SECRET_KEY=django-insecure-сюда_любой_сложный_ключ
+mysql://пользователь:пароль@localhost:3306/имя_бд?charset=utf8
+```
+
+## 3. Подключить домен ( biovostok.shop )
+
+В панели Beget: **Сайты** → **Домены** → добавить домен и указать NS-серверы Beget
+(или A-запись на IP хостинга, если домен куплен у другого регистратора).
+
+## 4. Загрузить проект
+
+### Вариант A — через Git (проще)
+
+1. Панель Beget → **Сайты** → напротив домена **"Управление"** → включите **доступ по SSH**
+2. Подключитесь по данным из панели:
+
+```bash
+ssh ваш_логин@ваш_логин.beget.tech
+```
+
+3. Выполните:
+
+```bash
+cd ~/ваш_домен/public_html
+git clone https://github.com/Korneyyy/furniture-shop.git .
+```
+
+### Вариант B — через FTP
+
+1. Панель Beget → **FTP** → создайте FTP-аккаунт
+2. Скачайте FileZilla и подключитесь (логин/пароль из панели)
+3. Скопируйте файлы проекта (кроме `venv/`, `__pycache__`, `data_dump.json`,
+   `.env.example*` — нужен только `.env`) в папку `public_html`
+
+## 5. Настроить окружение
+
+Создайте файл `public_html/.env` (шаблон — [`.env.example_beget`](.env.example_beget)):
+
+```env
+SECRET_KEY=<сгенерируйте: python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())">
 DEBUG=False
-ALLOWED_HOSTS=ваш-логин.beget.tech,www.ваш-логин.beget.tech
-DATABASE_URL=mysql://django_user:MyPassword123!@localhost:3306/furniture_shop?charset=utf8
-CLOUDINARY_CLOUD_NAME=ваш_cloud_name
-CLOUDINARY_API_KEY=ваш_api_key
-CLOUDINARY_API_SECRET=ваш_api_secret
-TELEGRAM_BOT_TOKEN=
-TELEGRAM_CHAT_ID=
+ALLOWED_HOSTS=biovostok.shop,www.biovostok.shop
+CSRF_TRUSTED_ORIGINS=https://biovostok.shop,https://www.biovostok.shop
+DATABASE_URL=mysql://пользователь:пароль@localhost:3306/имя_бд?charset=utf8
+CLOUDINARY_CLOUD_NAME=...
+CLOUDINARY_API_KEY=...
+CLOUDINARY_API_SECRET=...
+TELEGRAM_BOT_TOKEN=...
+TELEGRAM_CHAT_ID=...
+EMAIL_HOST_USER=...
+EMAIL_HOST_PASSWORD=...
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=<надёжный пароль>
 ```
 
-## 5. Настроить Python в Beget
+> ⚠️ `.env` никогда не коммитьтся в git (см. `.gitignore`).
 
-В панели управления Beget:
-1. **Сайты** → напротив вашего домена **"Управление"**
-2. Раздел **"Python"**
-3. Включите **"Поддержка Python"**
-4. Версия Python: **3.12**
-5. Точка входа: **passenger_wsgi.py** (файл уже есть в проекте)
-6. Путь к requirements.txt: `requirements.txt`
-7. Нажмите **"Сохранить"**
+## 6. Настроить Python в Beget
 
-## 6. Перезапустить сайт
+Панель Beget → **Сайты** → **"Управление"** → раздел **Python**:
 
-1. В панели Beget → **Сайты** → напротив домена нажмите **"Перезапустить"**
-2. Подождите 1-2 минуты
-3. Зайдите на `http://ваш-логин.beget.tech`
+1. Включите **"Поддержка Python"**
+2. Версия Python: **3.12**
+3. Точка входа: **passenger_wsgi.py** (файл уже в проекте)
+4. Путь к `requirements.txt`: `requirements.txt`
+5. Нажмите **"Сохранить"**
 
-## 7. Админка
+## 7. Миграции, данные, статика, администратор
 
-Логин: `admin`
-Пароль: `REMOVED`
+По SSH из `public_html`:
 
-**Сразу смените пароль!**
+```bash
+python manage.py migrate
+python manage.py collectstatic --noinput
+python scripts/create_superuser.py
+```
 
-## 8. Если сайт не работает
+`create_superuser.py` читает `ADMIN_USERNAME` / `ADMIN_PASSWORD` из `.env`
+и создаёт (или сбрасывает пароль) суперпользователя.
 
-1. В панели Beget → **Сайты** → **Логи ошибок** — посмотрите что там
-2. Скопируйте текст ошибки и отправьте мне
+Если нужно перенести данные со старого сайта — залейте файл дампа на сервер
+(локально, не через git) и выполните:
 
----
+```bash
+python manage.py loaddata data_dump.json
+```
 
-**Готово!** Beget — самое простое решение для Django.
+После переноса **смените пароли всех администраторов** через `changepassword`
+или `scripts/create_superuser.py` с новыми значениями.
+
+## 8. SSL-сертификат
+
+Панель Beget → **Сайты** → **"Управление"** → **SSL** → выпустить бесплатный
+Let's Encrypt для `biovostok.shop` и `www.biovostok.shop`.
+
+Пока сертификат не выпущен, в `.env` должно быть `SECURE_SSL_REDIRECT=False`,
+иначе — `True` (перенаправление http → https).
+
+## 9. Перезапустить сайт
+
+Панель Beget → **Сайты** → **"Перезапустить"**, подождите 1–2 минуты,
+откройте `https://biovostok.shop`.
+
+## 10. Если сайт не работает
+
+1. Панель Beget → **Сайты** → **Логи ошибок** — посмотрите текст
+2. Проверьте `.env` (нет опечаток, `DEBUG=False` не сломан)
+3. Убедитесь, что в панели указаны Python 3.12 и `passenger_wsgi.py`

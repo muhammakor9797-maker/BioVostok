@@ -39,3 +39,5 @@ api.env
 check_result.txt
 cloudinary_upload_log.txt
 data.json
+data_dump.json
+fix_cloudinary_log.txt

@@ -1,43 +1,48 @@
 # -*- coding: utf-8 -*-
 """
-Management command для автоматического создания суперпользователя.
-Запускается при каждом деплое на Render.
-Использует переменные окружения ADMIN_USERNAME и ADMIN_PASSWORD.
+Management command для создания/сброса паролей суперпользователей.
+Запуск: python manage.py ensuresuperuser
 
-Если переменные не заданы - использует значения по умолчанию.
-Если пользователь уже существует - обновляет пароль.
+Использует переменные окружения (обязательно для паролей):
+  ADMIN_USERNAME / ADMIN_PASSWORD / ADMIN_EMAIL
+  ADMIN2_USERNAME / ADMIN2_PASSWORD / ADMIN2_EMAIL
+
+Пароли без значений по умолчанию — команда пропускает пользователей,
+для которых они не заданы.
 """
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 
 
 class Command(BaseCommand):
-    help = 'Создаёт или обновляет суперпользователя из переменных окружения'
+    help = 'Создаёт или обновляет суперпользователей из переменных окружения'
 
     def handle(self, *args, **options):
         import os
-        
+
         User = get_user_model()
-        
-        # Данные пользователей
+
         users_data = [
             {
                 'username': os.environ.get('ADMIN_USERNAME', 'admin'),
-                'email': os.environ.get('ADMIN_EMAIL', 'admin@admin.com'),
-                'password': os.environ.get('ADMIN_PASSWORD', 'REMOVED'),
+                'email': os.environ.get('ADMIN_EMAIL', ''),
+                'password': os.environ.get('ADMIN_PASSWORD'),
             },
             {
-                'username': 'ayratSupUz',
-                'email': 'REMOVED',
-                'password': 'REMOVED',
+                'username': os.environ.get('ADMIN2_USERNAME'),
+                'email': os.environ.get('ADMIN2_EMAIL', ''),
+                'password': os.environ.get('ADMIN2_PASSWORD'),
             },
         ]
-        
+
         for data in users_data:
             username = data['username']
             email = data['email']
             password = data['password']
-            
+
+            if not username or not password:
+                continue
+
             if User.objects.filter(username=username).exists():
                 user = User.objects.get(username=username)
                 user.set_password(password)
@@ -57,5 +62,5 @@ class Command(BaseCommand):
                 self.stdout.write(
                     self.style.SUCCESS(f'SUPERUSER CREATED: {username}')
                 )
-        
-        self.stdout.write(f'Все пользователи обработаны')
+
+        self.stdout.write('Все пользователи обработаны')

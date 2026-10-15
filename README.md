@@ -44,9 +44,8 @@
 
 ### DevOps & Инструменты
 - **Git / GitHub** — контроль версий
-- **Render / Beget** — хостинг и деплой
-- **Nginx** — веб-сервер (на продакшене)
-- **Gunicorn / Passenger** — WSGI-сервер
+- **Beget** — хостинг и деплой
+- **Passenger** — WSGI-сервер
 
 ---
 
@@ -114,11 +113,10 @@ TELEGRAM_BOT_TOKEN=your_bot_token       # для уведомлений о за�
 TELEGRAM_CHAT_ID=your_chat_id
 ```
 
-### 4. Выполнить миграции и загрузить тестовые данные
+### 4. Выполнить миграции и создать администратора
 
 ```bash
 python manage.py migrate
-python manage.py loaddata data_dump.json   # тестовые товары
 python manage.py createsuperuser           # создание админа
 ```
 
@@ -138,15 +136,15 @@ python manage.py runserver
 
 ## 🌐 Деплой
 
-### Вариант 1: Render.com (рекомендуется)
+Проект деплоится на хостинг **Beget** ( Passenger). Файлы конфигурации:
 
-Проект готов к деплою на Render. Файлы конфигурации:
-- [`Procfile`](Procfile) — команда запуска
+- [`passenger_wsgi.py`](passenger_wsgi.py) — точка входа для Beget
 - [`runtime.txt`](runtime.txt) — версия Python
 
-### Вариант 2: Beget
+Подробная пошаговая инструкция — в [`README_BEGET.md`](README_BEGET.md).
 
-Подробная инструкция по деплою на Beget — в [`README_BEGET.md`](README_BEGET.md).
+Все секреты (`SECRET_KEY`, `DATABASE_URL`, пароли, ключи Cloudinary/Telegram/почты)
+задаются через `.env` на сервере и в git не хранятся.
 
 ---
 
@@ -159,26 +157,15 @@ BioVostok/
 ├── carts/               # Приложение корзины
 ├── orders/              # Приложение заказов
 ├── users/               # Приложение пользователей
-├── scripts/             # Утилиты (деплой, миграция на Cloudinary)
+├── scripts/             # Утилиты (создание суперпользователей, миграция на Cloudinary)
 ├── media/               # Медиафайлы (изображения товаров)
 ├── static/              # Статические файлы (css, js, изображения)
 ├── locale/              # Файлы переводов (ru, en, ar)
 ├── templates/           # HTML-шаблоны
 ├── requirements.txt     # Зависимости Python
-├── Procfile             # Конфигурация для Render
 ├── passenger_wsgi.py    # Точка входа для Beget
-└── data_dump.json       # Тестовые данные (dump)
+└── .env.example         # Шаблон переменных окружения (скопировать в .env)
 ```
-
----
-
-## 🔑 Тестовый доступ (админка)
-
-- **URL**: `/admin/`
-- **Логин**: `admin`
-- **Пароль**: `REMOVED`
-
-> ⚠️ **Смените пароль в продакшене!**
 
 ---
 

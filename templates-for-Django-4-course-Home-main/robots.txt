@@ -7,4 +7,4 @@ Disallow: /password-reset/
 Disallow: */add/
 Disallow: */remove/
 
-Sitemap: https://biovostok.onrender.com/sitemap.xml
+Sitemap: https://biovostok.shop/sitemap.xml
