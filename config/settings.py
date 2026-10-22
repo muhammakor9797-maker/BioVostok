@@ -15,9 +15,14 @@ from pathlib import Path
 
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'f'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# .env читается и при запуске через manage.py, и через WSGI/gunicorn.
+# Переменные окружения из панели Amvera имеют приоритет (override=False).
+load_dotenv(BASE_DIR / '.env', override=False)
 
 
 # Quick-start development settings - unsuitable for production
@@ -50,6 +55,13 @@ CSRF_TRUSTED_ORIGINS = [
     ).split(',')
     if o.strip()
 ]
+
+# Amvera выставляет переменную AMVERA в контейнере приложения.
+if os.environ.get('AMVERA'):
+    if '.amvera.io' not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append('.amvera.io')
+    if 'https://*.amvera.io' not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append('https://*.amvera.io')
 
 
 # Application definition
@@ -111,7 +123,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASE_URL = os.environ.get('DATABASE_URL', '').strip()
 if DATABASE_URL:
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL)
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=int(os.environ.get('DB_CONN_MAX_AGE', '600')),
+            conn_health_checks=True,
+        )
     }
 else:
     DATABASES = {
@@ -163,7 +179,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
     BASE_DIR / 'templates-for-Django-4-course-Home-main',
@@ -189,7 +205,7 @@ if CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET:
     )
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = Path(os.environ.get('MEDIA_ROOT', BASE_DIR / 'media'))
 
 # Хранилища (формат Django 6.0)
 STORAGES = {

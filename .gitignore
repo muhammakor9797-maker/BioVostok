@@ -34,6 +34,14 @@ staticfiles/
 Thumbs.db
 *.log
 
+# OpenCode / Node
+.opencode/
+node_modules/
+
+# Deploy data with PII (upload to Amvera /data manually)
+deploy/initial_data.json
+deploy/*.json
+
 # Temp & generated files
 api.env
 check_result.txt

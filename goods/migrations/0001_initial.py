@@ -50,21 +50,4 @@ class Migration(migrations.Migration):
                 'ordering': ['-created'],
             },
         ),
-        migrations.CreateModel(
-            name='Review',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('text', models.TextField(verbose_name='Текст отзыва')),
-                ('rating', models.PositiveSmallIntegerField(verbose_name='Оценка')),
-                ('created', models.DateTimeField(auto_now_add=True, verbose_name='Дата')),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.user', verbose_name='Автор')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to='goods.product', verbose_name='Товар')),
-            ],
-            options={
-                'verbose_name': 'Отзыв',
-                'verbose_name_plural': 'Отзывы',
-                'ordering': ['-created'],
-                'unique_together': {('product', 'author')},
-            },
-        ),
     ]
