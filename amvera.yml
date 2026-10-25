@@ -11,4 +11,5 @@ build:
 run:
   persistenceMount: /data
   containerPort: 8000
-  command: bash -c "python manage.py deploy_init && gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 120 --access-logfile - --error-logfile -"
+  command: bash -c "set -eux; python -u manage.py deploy_init && exec gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 120 --access-logfile - --error-logfile -"
+
