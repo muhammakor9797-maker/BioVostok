@@ -20,6 +20,11 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'f'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Каталог постоянных данных. На Amvera задайте DATA_DIR=/data в панели управления,
+# тогда БД и медиафайлы окажутся в персистентном volume и сохранятся между редеплоями.
+# Локально (без переменной) используется BASE_DIR — прежнее поведение разработки.
+DATA_DIR = Path(os.environ.get('DATA_DIR', str(BASE_DIR)))
+
 # .env читается и при запуске через manage.py, и через WSGI/gunicorn.
 # Переменные окружения из панели Amvera имеют приоритет (override=False).
 load_dotenv(BASE_DIR / '.env', override=False)
@@ -60,13 +65,18 @@ CSRF_TRUSTED_ORIGINS = [
 if os.environ.get('AMVERA'):
     if '.amvera.io' not in ALLOWED_HOSTS:
         ALLOWED_HOSTS.append('.amvera.io')
+    if '.amvera.tech' not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append('.amvera.tech')
     if 'https://*.amvera.io' not in CSRF_TRUSTED_ORIGINS:
         CSRF_TRUSTED_ORIGINS.append('https://*.amvera.io')
+    if 'https://*.amvera.tech' not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append('https://*.amvera.tech')
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,8 +84,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'cloudinary',
-    'modeltranslation',
     
     'goods',
     'carts',
@@ -133,7 +143,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'NAME': DATA_DIR / 'db.sqlite3',
         }
     }
 
@@ -205,7 +215,7 @@ if CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET:
     )
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = Path(os.environ.get('MEDIA_ROOT', BASE_DIR / 'media'))
+MEDIA_ROOT = Path(os.environ.get('MEDIA_ROOT', DATA_DIR / 'media'))
 
 # Хранилища (формат Django 6.0)
 STORAGES = {
