@@ -20,13 +20,13 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'f'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Каталог постоянных данных. На Amvera задайте DATA_DIR=/data в панели управления,
+# Каталог постоянных данных. На DADA Cloud задайте DATA_DIR=/data в панели управления,
 # тогда БД и медиафайлы окажутся в персистентном volume и сохранятся между редеплоями.
 # Локально (без переменной) используется BASE_DIR — прежнее поведение разработки.
 DATA_DIR = Path(os.environ.get('DATA_DIR', str(BASE_DIR)))
 
 # .env читается и при запуске через manage.py, и через WSGI/gunicorn.
-# Переменные окружения из панели Amvera имеют приоритет (override=False).
+# Переменные окружения из панели хостинга (DADA Cloud) имеют приоритет (override=False).
 load_dotenv(BASE_DIR / '.env', override=False)
 
 
@@ -54,23 +54,9 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     o.strip()
-    for o in os.environ.get(
-        'CSRF_TRUSTED_ORIGINS',
-        'https://biovostok.shop,https://www.biovostok.shop',
-    ).split(',')
+    for o in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
     if o.strip()
 ]
-
-# Amvera выставляет переменную AMVERA в контейнере приложения.
-if os.environ.get('AMVERA'):
-    if '.amvera.io' not in ALLOWED_HOSTS:
-        ALLOWED_HOSTS.append('.amvera.io')
-    if '.amvera.tech' not in ALLOWED_HOSTS:
-        ALLOWED_HOSTS.append('.amvera.tech')
-    if 'https://*.amvera.io' not in CSRF_TRUSTED_ORIGINS:
-        CSRF_TRUSTED_ORIGINS.append('https://*.amvera.io')
-    if 'https://*.amvera.tech' not in CSRF_TRUSTED_ORIGINS:
-        CSRF_TRUSTED_ORIGINS.append('https://*.amvera.tech')
 
 
 # Application definition
@@ -129,7 +115,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # Локально используется SQLite. На продакшене задайте DATABASE_URL в .env,
-# например: mysql://user:password@localhost:3306/dbname?charset=utf8
+# например: postgres://user:password@host:port/dbname
 DATABASE_URL = os.environ.get('DATABASE_URL', '').strip()
 if DATABASE_URL:
     DATABASES = {
