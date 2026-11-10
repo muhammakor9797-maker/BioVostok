@@ -20,23 +20,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='category',
-            name='active',
-            field=models.BooleanField(default=True, verbose_name='Показывать на сайте'),
-        ),
-        migrations.AddField(
-            model_name='category',
-            name='icon',
-            field=models.CharField(blank=True, max_length=50, verbose_name='Иконка эмодзи'),
-        ),
-        migrations.AddField(
-            model_name='category',
             name='name_ru',
             field=models.CharField(max_length=100, null=True, verbose_name='Название категории'),
-        ),
-        migrations.AddField(
-            model_name='category',
-            name='order',
-            field=models.PositiveIntegerField(default=0, verbose_name='Порядок сортировки'),
         ),
         migrations.AddField(
             model_name='product',

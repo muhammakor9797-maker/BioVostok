@@ -7,16 +7,19 @@ from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    help = 'Подготавливает приложение к запуску на Amvera: миграции, начальные товары, админ, статика'
+    help = 'Готовит приложение к запуску на продакшене (DADA Cloud / Amvera): миграции БД, начальные товары, суперпользователь, статика'
 
     def handle(self, *args, **options):
         self.stdout.write('=== Deploy init started ===')
 
         # 1. Миграции — идемпотентны, безопасно запускать повторно.
-        # ВРЕМЕННО ОТКЛЮЧЕНО для диагностики DuplicateColumn (2026-11-10):
-        # call_command('migrate', interactive=False, verbosity=1)
-        self.stdout.write('Применяю миграции базы данных... (пропущено временно)')
-        self.stdout.write(self.style.SUCCESS('Миграции пропущены (временное решение)'))
+        # Применяются ВСЕГДА: на пустой БД создают схему с нуля, на существующей —
+        # доводят до актуального состояния. Любая ошибка прерывает выполнение
+        # команды, и запуск сценария (Procfile / amvera.yml: set -eux ... && exec gunicorn)
+        # не дойдёт до gunicorn — приложение не стартует при неудачных миграциях.
+        self.stdout.write('Применяю миграции базы данных...')
+        call_command('migrate', interactive=False, verbosity=1)
+        self.stdout.write(self.style.SUCCESS('Миграции применены'))
 
         # 2. Начальные товары только если база пустая — существующие данные не трогаем.
         from goods.models import Product
