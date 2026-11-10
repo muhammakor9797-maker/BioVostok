@@ -13,9 +13,10 @@ class Command(BaseCommand):
         self.stdout.write('=== Deploy init started ===')
 
         # 1. Миграции — идемпотентны, безопасно запускать повторно.
-        self.stdout.write('Применяю миграции базы данных...')
-        call_command('migrate', interactive=False, verbosity=1)
-        self.stdout.write(self.style.SUCCESS('Миграции применены'))
+        # ВРЕМЕННО ОТКЛЮЧЕНО для диагностики DuplicateColumn (2026-11-10):
+        # call_command('migrate', interactive=False, verbosity=1)
+        self.stdout.write('Применяю миграции базы данных... (пропущено временно)')
+        self.stdout.write(self.style.SUCCESS('Миграции пропущены (временное решение)'))
 
         # 2. Начальные товары только если база пустая — существующие данные не трогаем.
         from goods.models import Product
