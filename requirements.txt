@@ -1,5 +1,5 @@
 # Совместимая версия Django
-Django==6.0.4
+Django==4.2.20
 django-modeltranslation==0.19.12
 pillow==11.1.0
 requests==2.32.3
@@ -7,6 +7,6 @@ sqlparse==0.5.3
 python-dotenv==1.1.0
 whitenoise==6.9.0
 dj-database-url==3.1.2
-psycopg[binary]==3.3.6
+psycopg2-binary==2.9.9
 cloudinary==1.41.0
 gunicorn==26.2.0

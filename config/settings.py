@@ -115,7 +115,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # Локально используется SQLite. На продакшене задайте DATABASE_URL в .env,
-# например: postgres://user:password@host:port/dbname
+# например: postgres://user:password@host:port/dbname?sslmode=require
 DATABASE_URL = os.environ.get('DATABASE_URL', '').strip()
 if DATABASE_URL:
     DATABASES = {
@@ -125,6 +125,10 @@ if DATABASE_URL:
             conn_health_checks=True,
         )
     }
+    # DADA Cloud и большинство managed PostgreSQL требуют SSL-соединение.
+    # sslmode=require гарантирует зашифрованный канал и совместимость с SASL/SCRAM.
+    DATABASES['default'].setdefault('OPTIONS', {})
+    DATABASES['default']['OPTIONS'].setdefault('sslmode', 'require')
 else:
     DATABASES = {
         'default': {
