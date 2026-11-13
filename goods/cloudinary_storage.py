@@ -104,10 +104,10 @@ class CloudinaryStorage(Storage):
         if cloud_name and f'res.cloudinary.com/{cloud_name}' in name:
             return name
         
-        # Строим URL через cloudinary
+        # Строим URL через cloudinary (HTTPS для продакшена)
         public_id = self._get_public_id(name)
         try:
-            result = cloudinary.utils.cloudinary_url(public_id)
+            result = cloudinary.utils.cloudinary_url(public_id, secure=True)
             if result and len(result) > 0:
                 return result[0]
         except:

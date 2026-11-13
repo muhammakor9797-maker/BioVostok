@@ -42,15 +42,46 @@ class Command(BaseCommand):
                 call_command('loaddata', str(fixture), verbosity=1)
                 self.stdout.write(self.style.SUCCESS('Начальные товары загружены'))
 
-        # 3. Суперпользователь — только если задан пароль, иначе пропускаем.
-        if os.environ.get('ADMIN_PASSWORD'):
-            self.stdout.write('Создаю/обновляю суперпользователя...')
-            call_command('ensuresuperuser')
-            self.stdout.write(self.style.SUCCESS('Суперпользователь обработан'))
-        else:
+        # 3. Суперпользователь — только если заданы все BIOVOSTOK_ADMIN_* переменные.
+        # Идемпотентно: существующего пользователя не трогаем.
+        username = os.environ.get('BIOVOSTOK_ADMIN_USERNAME', '').strip()
+        email = os.environ.get('BIOVOSTOK_ADMIN_EMAIL', '').strip()
+        password = os.environ.get('BIOVOSTOK_ADMIN_PASSWORD', '').strip()
+
+        if not username or not password:
             self.stdout.write(self.style.WARNING(
-                'ADMIN_PASSWORD не задан — суперпользователь не создан'
+                'BIOVOSTOK_ADMIN_USERNAME или BIOVOSTOK_ADMIN_PASSWORD не заданы — '
+                'суперпользователь не создан'
             ))
+        else:
+            from django.contrib.auth import get_user_model
+            from django.core.exceptions import ValidationError
+            from django.contrib.auth.password_validation import validate_password
+
+            User = get_user_model()
+
+            if User.objects.filter(username=username).exists():
+                self.stdout.write(
+                    f'Суперпользователь с username="{username}" уже существует — пропускаю'
+                )
+            else:
+                # Валидация пароля через встроенные Django валидаторы
+                try:
+                    validate_password(password)
+                except ValidationError as exc:
+                    self.stdout.write(self.style.ERROR(
+                        f'Пароль для "{username}" не прошёл валидацию: '
+                        f'{exc.messages[0]} — суперпользователь не создан'
+                    ))
+                else:
+                    User.objects.create_superuser(
+                        username=username,
+                        email=email or '',
+                        password=password,
+                    )
+                    self.stdout.write(self.style.SUCCESS(
+                        f'Суперпользователь "{username}" создан'
+                    ))
 
         # 4. Статика.
         self.stdout.write('Собираю статические файлы (collectstatic)...')
